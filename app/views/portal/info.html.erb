@@ -1,0 +1,53 @@
+<!-- app/views/portal/index.html.erb -->
+<div class="container mt-5">
+  <h1 class="mb-4">This is <%= current_school_login.role.titleize %> portal info page</h1>
+  <table class="table table-bordered">
+    <thead class="thead-light">
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if current_school_login.admin? %>
+        <!-- Display users and their roles -->
+        <% SchoolLogin.all.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.email %></td>
+            <td><%= user.role.titleize %></td>
+            <td>
+              <% if user.admin? %>
+                Admin
+              <% elsif user.teacher? %>
+                <!-- Add teacher edit link if needed -->
+                <%#= link_to 'Edit', edit_user_path(user), class: "btn btn-info btn-sm" %>
+              <% else %>
+                <!-- Add student edit link if needed -->
+                <%#= link_to 'Edit', edit_student_path(user), class: "btn btn-info btn-sm" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% if current_school_login.teacher? %>
+          <tr>
+            <td><%= current_school_login.id %></td>
+            <td><%= current_school_login.email %></td>
+            <td><%= current_school_login.role.titleize %></td>
+            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
+          </tr>
+        <% end %>
+      <% else %>
+        <!-- Display user's own information and edit link -->
+        <tr>
+          <td><%= current_school_login.id %></td>
+          <td><%= current_school_login.email %></td>
+          <td><%= current_school_login.role.titleize %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

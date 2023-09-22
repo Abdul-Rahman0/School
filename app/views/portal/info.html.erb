@@ -5,49 +5,84 @@
     <thead class="thead-light">
       <tr>
         <th>ID</th>
-        <th>Email</th>
-        <th>Role</th>
+        <th>class</th>
+        <th>name</th>
+        <th>subject</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
       <% if current_school_login.admin? %>
         <!-- Display users and their roles -->
-        <% SchoolLogin.all.each do |user| %>
+        <% Student.all.each do |user| %>
           <tr>
             <td><%= user.id %></td>
-            <td><%= user.email %></td>
-            <td><%= user.role.titleize %></td>
-            <td>
-              <% if user.admin? %>
-                Admin
-              <% elsif user.teacher? %>
-                <!-- Add teacher edit link if needed -->
-                <%#= link_to 'Edit', edit_user_path(user), class: "btn btn-info btn-sm" %>
-              <% else %>
-                <!-- Add student edit link if needed -->
-                <%#= link_to 'Edit', edit_student_path(user), class: "btn btn-info btn-sm" %>
-              <% end %>
-            </td>
+            <td><%= user.class_name %></td>
+            <td><%= user.name%></td>
+            <td><%= user%></td>
+            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
           </tr>
         <% end %>
-        <% if current_school_login.teacher? %>
+        <% Teacher.all.each do |t| %>
           <tr>
-            <td><%= current_school_login.id %></td>
-            <td><%= current_school_login.email %></td>
-            <td><%= current_school_login.role.titleize %></td>
+            <td><%= t.id %></td>
+            <td><%= t.class_names.pluck(:name) %></td>
+            <td><%= t.name%></td>
+            <td><%= t.subject.name%></td>
+            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
+          </tr>
+        <% end %>
+      <% elsif current_school_login.teacher? %>
+        <% Teacher.all.each do |t| %>
+          <tr>
+            <td><%= t.id %></td>
+            <td><%= t.class_names.pluck(:name) %></td>
+            <td><%= t.name%></td>
+            <td><%= t.subject.name%></td>
             <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
           </tr>
         <% end %>
       <% else %>
         <!-- Display user's own information and edit link -->
-        <tr>
-          <td><%= current_school_login.id %></td>
-          <td><%= current_school_login.email %></td>
-          <td><%= current_school_login.role.titleize %></td>
-          <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-        </tr>
+        <% Student.all.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.class_name %></td>
+            <td><%= user.name%></td>
+            <td></td>
+            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get the select element
+    const roleFilter = document.getElementById("roleFilter");
+
+    // Add event listener to filter the rows based on the selected role
+    roleFilter.addEventListener("change", function () {
+      const selectedRole = roleFilter.value;
+
+      // Hide all rows
+      const rows = document.querySelectorAll("tr.student, tr.teacher");
+      rows.forEach((row) => {
+        row.style.display = "none";
+      });
+
+      // Show rows based on the selected role
+      if (selectedRole === "all") {
+        rows.forEach((row) => {
+          row.style.display = "";
+        });
+      } else {
+        const roleRows = document.querySelectorAll(`tr.${selectedRole}`);
+        roleRows.forEach((row) => {
+          row.style.display = "";
+        });
+      }
+    });
+  });
+</script>

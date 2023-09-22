@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_21_055647) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_22_071921) do
+  create_table "class_names", force: :cascade do |t|
+    t.string "name"
+    t.string "subject"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "classinfos", force: :cascade do |t|
+    t.integer "class_name_id"
+    t.integer "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["class_name_id"], name: "index_classinfos_on_class_name_id"
+    t.index ["teacher_id"], name: "index_classinfos_on_teacher_id"
+  end
+
   create_table "school_logins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -26,9 +42,25 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_21_055647) do
 
   create_table "students", force: :cascade do |t|
     t.string "name"
-    t.string "class"
+    t.string "class_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.string "name"
+    t.string "class_name"
+    t.integer "subject_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subject_id"], name: "index_teachers_on_subject_id"
   end
 
 end

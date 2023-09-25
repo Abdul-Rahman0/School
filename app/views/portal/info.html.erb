@@ -14,7 +14,7 @@
     <tbody>
       <% if current_school_login.admin? %>
         <!-- Display users and their roles -->
-        <% Student.all.each do |user| %>
+        <% SchoolLogin.all.each do |user| %>
           <tr>
             <td><%= user.id %></td>
             <td><%= user.class_name %></td>
@@ -47,9 +47,9 @@
         <% Student.all.each do |user| %>
           <tr>
             <td><%= user.id %></td>
-            <td><%= user.class_name %></td>
-            <td><%= user.name%></td>
-            <td></td>
+            <td><%= user.class_name.name %></td>
+            <td><%= user.name %></td>
+            <td><%= user.class_name.subjects.pluck(:name).join(', ') %></td>
             <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
           </tr>
         <% end %>
@@ -57,32 +57,3 @@
     </tbody>
   </table>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get the select element
-    const roleFilter = document.getElementById("roleFilter");
-
-    // Add event listener to filter the rows based on the selected role
-    roleFilter.addEventListener("change", function () {
-      const selectedRole = roleFilter.value;
-
-      // Hide all rows
-      const rows = document.querySelectorAll("tr.student, tr.teacher");
-      rows.forEach((row) => {
-        row.style.display = "none";
-      });
-
-      // Show rows based on the selected role
-      if (selectedRole === "all") {
-        rows.forEach((row) => {
-          row.style.display = "";
-        });
-      } else {
-        const roleRows = document.querySelectorAll(`tr.${selectedRole}`);
-        roleRows.forEach((row) => {
-          row.style.display = "";
-        });
-      }
-    });
-  });
-</script>

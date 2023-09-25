@@ -30,28 +30,34 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_071921) do
   create_table "school_logins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "name"
+    t.integer "class_name_id"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.integer "role", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["class_name_id"], name: "index_school_logins_on_class_name_id"
     t.index ["email"], name: "index_school_logins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_school_logins_on_reset_password_token", unique: true
   end
 
   create_table "students", force: :cascade do |t|
     t.string "name"
-    t.string "class_name"
+    t.integer "class_name_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["class_name_id"], name: "index_students_on_class_name_id"
   end
 
   create_table "subjects", force: :cascade do |t|
     t.string "code"
     t.string "name"
+    t.integer "class_name_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["class_name_id"], name: "index_subjects_on_class_name_id"
   end
 
   create_table "teachers", force: :cascade do |t|

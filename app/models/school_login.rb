@@ -1,6 +1,9 @@
 class SchoolLogin < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
+  belongs_to :class_name, optional: true
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -10,4 +13,5 @@ class SchoolLogin < ApplicationRecord
   def set_default_role
     self.role || :school_login 
   end
+
 end

@@ -22,4 +22,9 @@ class ApplicationController < ActionController::Base
     params.require(:school_login).permit(:name, :email, :password, :password_confirmation, :current_password)
   end
 
+
+  def edit_admin
+    @user = SchoolLogin.find(params[:id])
+  end
+
 end

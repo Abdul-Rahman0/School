@@ -4,8 +4,9 @@ class PortalController < ApplicationController
 
     case current_school_login.role.to_sym
     when :admin
-      @students = Student.all
+      @students = SchoolLogin.all
       @teachers = Teacher.all
+      @subjects = Subject.all
     when :teacher
       @teacher = current_school_login
     when :student

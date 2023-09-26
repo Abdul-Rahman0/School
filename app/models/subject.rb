@@ -1,4 +1,4 @@
 class Subject < ApplicationRecord
-  has_many :teachers
+  has_many :school_logins
   belongs_to :class_name
 end

@@ -6,54 +6,62 @@
       <tr>
         <th>ID</th>
         <th>class</th>
-        <th>name</th>
         <th>subject</th>
+        <th>name</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <% if current_school_login.admin? %>
-        <!-- Display users and their roles -->
-        <% SchoolLogin.all.each do |user| %>
-          <tr>
-            <td><%= user.id %></td>
-            <td><%= user.class_name %></td>
-            <td><%= user.name%></td>
-            <td><%= user%></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
-        <% Teacher.all.each do |t| %>
-          <tr>
-            <td><%= t.id %></td>
-            <td><%= t.class_names.pluck(:name) %></td>
-            <td><%= t.name%></td>
-            <td><%= t.subject.name%></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
-      <% elsif current_school_login.teacher? %>
-        <% Teacher.all.each do |t| %>
-          <tr>
-            <td><%= t.id %></td>
-            <td><%= t.class_names.pluck(:name) %></td>
-            <td><%= t.name%></td>
-            <td><%= t.subject.name%></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
-      <% else %>
-        <!-- Display user's own information and edit link -->
-        <% Student.all.each do |user| %>
-          <tr>
-            <td><%= user.id %></td>
-            <td><%= user.class_name.name %></td>
-            <td><%= user.name %></td>
-            <td><%= user.class_name.subjects.pluck(:name).join(', ') %></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
+      <% case current_school_login.role.to_sym %>
+      <% when :admin %>
+      <!-- Display admin-related data -->
+      <% @students.each do |student| %>
+        <tr>
+          <td><%= student.id %></td>
+          <td><%= student.class_name.name %></td>
+          <td><%= student.name %></td>
+          <td><%= student.class_name.subjects.pluck(:name).join(', ') %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(student), class: "btn btn-info btn-sm" %></td>
+        </tr>
       <% end %>
-    </tbody>
-  </table>
+      <% @teachers.each do |teacher| %>
+        <tr>
+          <td><%= teacher.id %></td>
+          <td><%= teacher.class_names.pluck(:name).join(', ') %></td>
+          <td><%= teacher.name %></td>
+          <td><%= teacher.subject.name %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(teacher), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% end %>
+      <% when :teacher %>
+      <!-- Display teacher-related data -->
+      <% if @teacher.present? %>
+        <tr>
+          <td><%= @teacher.id %></td>
+          <td></td>
+          <%# <td><%= @teacher.class_names.pluck(:name).join(', ') %>
+          <td><%= @teacher.name %></td>
+          <td><%= @teacher.subject.name if @teacher.subject.present? %></td>
+          <td></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(@teacher), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% end %>
+      <% when :student %>
+      <!-- Display student-related data -->
+      <% if @student.present? %>
+        <tr>
+          <td><%= @student.id %></td>
+          <td><%= @student.class_name.name if @student.class_name.present? %></td>
+          <td><%= @student.class_name.subjects.pluck(:name).join(', ') if @student.class_name.present? %></td>
+          <td><%= @student.name %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(@student), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% else%>
+        <tr>
+          <td colspan="5">Student data not found.</td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
 </div>

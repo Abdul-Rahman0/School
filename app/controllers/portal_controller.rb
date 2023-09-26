@@ -1,12 +1,15 @@
 class PortalController < ApplicationController
   def info
-   if current_school_login.admin?
+    @current_school_login = current_school_login
+
+    case current_school_login.role.to_sym
+    when :admin
       @students = Student.all
       @teachers = Teacher.all
-    elsif current_school_login.teacher?
-      @teacher = Teacher.find_by(id: current_school_login.id)
-    elsif current_school_login.student?
-      @student = Student.find_by(id: current_school_login.id)
+    when :teacher
+      @teacher = current_school_login
+    when :student
+      @student = current_school_login
     end
   end
 end

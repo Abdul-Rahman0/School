@@ -35,15 +35,16 @@
 <% end %>
 <%= render "devise/shared/links" %>
 <script>
-  // JavaScript to show/hide the subjects field based on the selected role
-  const roleSelect = document.getElementById('role-select');
-  const subjectsField = document.getElementById('subjects-field');
+  console.log("dfkskldsnf")
+   // JavaScript to show/hide the subjects field based on the selected role
+   const roleSelect = document.getElementById('role-select');
+   const subjectsField = document.getElementById('subjects-field');
 
-  roleSelect.addEventListener('change', () => {
-    if (roleSelect.value === 'teacher') {
-      subjectsField.style.display = 'block';
-    } else {
-      subjectsField.style.display = 'none';
-    }
-  });
+   roleSelect.addEventListener('change', () => {
+     if (roleSelect.value === 'teacher') {
+       subjectsField.style.display = 'block';
+     } else {
+       subjectsField.style.display = 'none';
+     }
+   });
 </script>

@@ -1,0 +1,35 @@
+<%= form_with(model: @school_login, local: true) do |form| %>
+  <% if @school_login.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@school_login.errors.count, "error") %> prohibited this school login from being saved:</h2>
+      <ul>
+        <% @school_login.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+  <div class="field">
+    <%= form.label :class_name_id, 'Class Name' %>
+    <%= form.collection_select :class_name_id, ClassName.all, :id, :name, prompt: 'Select a class' %>
+  </div>
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+  </div>
+  <div class="field">
+    <%= form.label :password_confirmation %>
+    <%= form.password_field :password_confirmation %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

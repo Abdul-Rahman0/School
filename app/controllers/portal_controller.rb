@@ -13,4 +13,5 @@ class PortalController < ApplicationController
       @student = current_school_login
     end
   end
+
 end

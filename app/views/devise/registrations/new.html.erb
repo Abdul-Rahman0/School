@@ -3,7 +3,11 @@
   <%= render "devise/shared/error_messages", resource: resource %>
   <div class="mb-3">
     <%= f.label :role, class: 'form-label' %>
-    <%= f.select :role, SchoolLogin.roles.keys, {}, class: 'form-select' %>
+    <%= f.select :role, SchoolLogin.roles.keys, {}, class: 'form-select', id: 'role-select' %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :name, class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
   <div class="mb-3">
     <%= f.label :email, class: 'form-label' %>
@@ -20,8 +24,27 @@
     <%= f.label :password_confirmation, class: 'form-label' %>
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
   </div>
+  <!-- Add the subjects field, initially hidden -->
+  <div class="mb-3" id="subjects-field" style="display: none;">
+    <%= f.label :subject, class: 'form-label' %>
+    <%= f.text_field :subject, class: 'form-control' %>
+  </div>
   <div class="actions">
     <%= f.submit "Sign up", class: 'btn btn-primary' %>
   </div>
 <% end %>
 <%= render "devise/shared/links" %>
+<script>
+  console.log("dfkskldsnf")
+   // JavaScript to show/hide the subjects field based on the selected role
+   const roleSelect = document.getElementById('role-select');
+   const subjectsField = document.getElementById('subjects-field');
+
+   roleSelect.addEventListener('change', () => {
+     if (roleSelect.value === 'teacher') {
+       subjectsField.style.display = 'block';
+     } else {
+       subjectsField.style.display = 'none';
+     }
+   });
+</script>

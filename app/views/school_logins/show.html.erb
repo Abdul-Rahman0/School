@@ -1,0 +1,7 @@
+<h1>Showing School Login</h1>
+<p><strong>Name:</strong> <%= @school_login.name %></p>
+<p><strong>Email:</strong> <%= @school_login.email %></p>
+<p><strong>class:</strong> <%= @school_login.class_name.name %></p>
+<p><strong>subject:</strong> <%= @school_login.class_name.subjects.pluck(:name).join(', ')%></p>
+<%= link_to 'Edit', edit_school_login_path(@school_login) %> |
+<%= link_to 'Back', school_logins_path %>

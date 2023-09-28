@@ -3,6 +3,8 @@ class CreateSubjects < ActiveRecord::Migration[7.0]
     create_table :subjects do |t|
       t.string :code
       t.string :name
+      t.references :class_name
+      
 
       t.timestamps
     end

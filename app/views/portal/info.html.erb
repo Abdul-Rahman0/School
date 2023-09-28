@@ -1,88 +1,111 @@
 <!-- app/views/portal/index.html.erb -->
 <div class="container mt-5">
   <h1 class="mb-4">This is <%= current_school_login.role.titleize %> portal info page</h1>
+  <!-- Add buttons for filtering -->
   <table class="table table-bordered">
     <thead class="thead-light">
       <tr>
         <th>ID</th>
-        <th>class</th>
-        <th>name</th>
-        <th>subject</th>
+        <th>Class</th>
+        <th>Subject</th>
+        <th>Name</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-      <% if current_school_login.admin? %>
-        <!-- Display users and their roles -->
-        <% Student.all.each do |user| %>
-          <tr>
-            <td><%= user.id %></td>
-            <td><%= user.class_name %></td>
-            <td><%= user.name%></td>
-            <td><%= user%></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
-        <% Teacher.all.each do |t| %>
-          <tr>
-            <td><%= t.id %></td>
-            <td><%= t.class_names.pluck(:name) %></td>
-            <td><%= t.name%></td>
-            <td><%= t.subject.name%></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
-      <% elsif current_school_login.teacher? %>
-        <% Teacher.all.each do |t| %>
-          <tr>
-            <td><%= t.id %></td>
-            <td><%= t.class_names.pluck(:name) %></td>
-            <td><%= t.name%></td>
-            <td><%= t.subject.name%></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
-      <% else %>
-        <!-- Display user's own information and edit link -->
-        <% Student.all.each do |user| %>
-          <tr>
-            <td><%= user.id %></td>
-            <td><%= user.class_name %></td>
-            <td><%= user.name%></td>
-            <td></td>
-            <td><%= link_to 'Edit', edit_school_login_registration_path, class: "btn btn-info btn-sm" %></td>
-          </tr>
-        <% end %>
+      <% case current_school_login.role.to_sym %>
+      <% when :admin %>
+      <!-- Display admin-related data -->
+      <div class="mb-3">
+        <button class="btn btn-primary" id="students-button">Show Students</button>
+        <button class="btn btn-primary" id="teachers-button">Show Teachers</button>
+        <button class="btn btn-primary" id="subjects-button">Show Subjects</button>
+      </div>
+      <% @students.each do |student| %>
+        <tr class="student-row">
+          <td><%= student.id %></td>
+          <td><%= student.class_name.name if student.class_name.present?%></td>
+          <td><%= student.class_name.subjects.pluck(:name).join(', ') if student.class_name.present? %></td>
+          <td><%= student.name %></td>
+          <td><%= link_to 'show', school_login_registration_path(student.id), class: "btn btn-info btn-sm" %></td>
+        </tr>
       <% end %>
-    </tbody>
-  </table>
+      <% @teachers.each do |teacher| %>
+        <tr class="teacher-row">
+          <td><%= teacher.id %></td>
+          <td><%= teacher.class_names.pluck(:name).join(', ') %></td>
+          <td><%= teacher.subject.name %></td>
+          <td><%= teacher.name %></td>
+          <td><%= link_to 'show', school_login_registration_path(teacher.id), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% end %>
+      <% @subjects.each do |subject| %>
+        <tr class="subject-row">
+          <td></td>
+          <td></td>
+          <td><%= subject.code %></td>
+          <td><%= subject.name %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(subject), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% end %>
+      <% when :teacher %>
+      <!-- Display teacher-related data -->
+      <% if @teacher.present? %>
+        <tr class="teacher-row">
+          <td><%= @teacher.id %></td>
+          <td></td>
+          <td><%= @teacher.subject.name if @teacher.subject.present? %></td>
+          <td><%= @teacher.name %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(@teacher), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% end %>
+      <% when :student %>
+      <!-- Display student-related data -->
+      <% if @student.present? %>
+        <tr class="student-row">
+          <td><%= @student.id %></td>
+          <td><%= @student.class_name.name if @student.class_name.present? %></td>
+          <td><%= @student.class_name.subjects.pluck(:name).join(', ') if @student.class_name.present? %></td>
+          <td><%= @student.name %></td>
+          <td><%= link_to 'Edit', edit_school_login_registration_path(@student), class: "btn btn-info btn-sm" %></td>
+        </tr>
+      <% else %>
+        <tr>
+          <td colspan="5">Student data not found.</td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
 </div>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Get the select element
-    const roleFilter = document.getElementById("roleFilter");
+  document.addEventListener('DOMContentLoaded', function() {
+    const studentsButton = document.getElementById('students-button');
+    const teachersButton = document.getElementById('teachers-button');
+    const subjectsButton = document.getElementById('subjects-button');
 
-    // Add event listener to filter the rows based on the selected role
-    roleFilter.addEventListener("change", function () {
-      const selectedRole = roleFilter.value;
+    studentsButton.addEventListener('click', function() {
+      toggleRows('student-row');
+    });
 
-      // Hide all rows
-      const rows = document.querySelectorAll("tr.student, tr.teacher");
-      rows.forEach((row) => {
-        row.style.display = "none";
+    teachersButton.addEventListener('click', function() {
+      toggleRows('teacher-row');
+    });
+
+    subjectsButton.addEventListener('click', function() {
+      toggleRows('subject-row');
+    });
+
+    function toggleRows(className) {
+      const rows = document.querySelectorAll('.' + className);
+      rows.forEach(function(row) {
+        row.style.display = 'table-row';
       });
 
-      // Show rows based on the selected role
-      if (selectedRole === "all") {
-        rows.forEach((row) => {
-          row.style.display = "";
-        });
-      } else {
-        const roleRows = document.querySelectorAll(`tr.${selectedRole}`);
-        roleRows.forEach((row) => {
-          row.style.display = "";
-        });
-      }
-    });
+      const otherRows = document.querySelectorAll('tr:not(.' + className + ')');
+      otherRows.forEach(function(row) {
+        row.style.display = 'none';
+      });
+    }
   });
 </script>

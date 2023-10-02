@@ -1,7 +1,15 @@
-<h1>Showing School Login</h1>
-<p><strong>Name:</strong> <%= @school_login.name %></p>
-<p><strong>Email:</strong> <%= @school_login.email %></p>
-<p><strong>class:</strong> <%= @school_login.class_name.name %></p>
-<p><strong>subject:</strong> <%= @school_login.class_name.subjects.pluck(:name).join(', ')%></p>
-<%= link_to 'Edit', edit_school_login_path(@school_login) %> |
-<%= link_to 'Back', school_logins_path %>
+<div class="container mt-5">
+  <h1 class="mb-4">Showing School Login</h1>
+  <div class="card">
+    <div class="card-body">
+      <p><strong>Name:</strong> <%= @school_login.name %></p>
+      <p><strong>Email:</strong> <%= @school_login.email %></p>
+      <p><strong>Class:</strong> <%= @school_login.class_name.name %></p>
+      <p><strong>Subjects:</strong> <%= @school_login.class_name.subjects.pluck(:name).join(', ') %></p>
+    </div>
+  </div>
+  <div class="mt-3">
+    <%= link_to 'Edit', edit_school_login_path(@school_login), class: 'btn btn-primary' %> |
+    <%= link_to 'Back', school_logins_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

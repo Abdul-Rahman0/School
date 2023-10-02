@@ -9,5 +9,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root to: "home#index"
+  get 'portal/new_class_subject', to: 'portal#new_class_subject'
+
+  post 'create_class_subject', to: 'portal#create_class_subject'
   resources :school_logins
 end

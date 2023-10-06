@@ -1,35 +1,38 @@
-<%= form_with(model: @school_login, local: true) do |form| %>
-  <% if @school_login.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@school_login.errors.count, "error") %> prohibited this school login from being saved:</h2>
-      <ul>
-        <% @school_login.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<div class="container mt-5">
+  <h1 class="mb-4">New School Login</h1>
+  <%= form_with(model: @school_login, local: true, class: 'form') do |form| %>
+    <% if @school_login.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger">
+        <h2><%= pluralize(@school_login.errors.count, "error") %> prohibited this school login from being saved:</h2>
+        <ul>
+          <% @school_login.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= form.label :name, class: 'control-label' %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= form.label :email, class: 'control-label' %>
+      <%= form.email_field :email, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= form.label :class_name_id, 'Class Name', class: 'control-label' %>
+      <%= form.collection_select :class_name_id, ClassName.all, :id, :name, { prompt: 'Select a class' }, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= form.label :password, class: 'control-label' %>
+      <%= form.password_field :password, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= form.label :password_confirmation, class: 'control-label' %>
+      <%= form.password_field :password_confirmation, class: 'form-control' %>
+    </div>
+    <div class="actions">
+      <%= form.submit 'Create School Login', class: 'btn btn-primary' %>
     </div>
   <% end %>
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-  <div class="field">
-    <%= form.label :email %>
-    <%= form.email_field :email %>
-  </div>
-  <div class="field">
-    <%= form.label :class_name_id, 'Class Name' %>
-    <%= form.collection_select :class_name_id, ClassName.all, :id, :name, prompt: 'Select a class' %>
-  </div>
-  <div class="field">
-    <%= form.label :password %>
-    <%= form.password_field :password %>
-  </div>
-  <div class="field">
-    <%= form.label :password_confirmation %>
-    <%= form.password_field :password_confirmation %>
-  </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

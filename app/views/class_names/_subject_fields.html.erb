@@ -1,0 +1,5 @@
+<%= f.simple_fields_for :subjects do |subjects| %>
+  <%= subjects.input :name %>
+  <%= subjects.input :code %>
+  <%= subjects.input :_destroy, as: :hidden, input_html: { class: 'remove-subject' } %>
+<% end %>

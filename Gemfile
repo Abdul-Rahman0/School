@@ -74,3 +74,4 @@ end
 
 
 gem 'devise', '~> 4.9', '>= 4.9.2'
+gem 'simple_form'

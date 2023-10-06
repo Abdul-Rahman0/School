@@ -1,0 +1,43 @@
+<%= simple_form_for @class_name, html: { 'data-turbo' => "false" } do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <%= f.input :name %><br>
+  <h4>Subjects</h4>
+  <div class="subject-fields-template">
+    <%= f.simple_fields_for :subjects do |subjects| %>
+      <%= render 'subject_fields', subjects: subjects, f: f %>
+    <% end %>
+  </div>
+  <div id="subject-fields-container">
+  </div>
+  <p id="add-subject">Add Another Subject</p>
+  <%= f.button :submit, class: 'btn btn-primary' %>
+<% end %>
+<script>
+  $(document).ready(function() {
+    var subjectCounter = 0;
+
+    $('#add-subject').click(function() {
+      var time = new Date().getTime();
+      var subjectFieldsTemplate = $('.subject-fields-template').html();
+      subjectFieldsTemplate = subjectFieldsTemplate.replace(/NEW_RECORD/g, time);
+      var $newSubjectFields = $(subjectFieldsTemplate);
+
+      // Generate unique IDs and update name attributes for the newly added subject fields
+      $newSubjectFields.find('[id^="class_name_subjects_attributes_"]').each(function() {
+        var uniqueId = "class_name_subjects_attributes_" + time + "_" + subjectCounter;
+        var oldId = $(this).attr('id');
+        var newId = oldId.replace(/class_name_subjects_attributes_\d+/, uniqueId);
+        $(this).attr('id', newId);
+
+        // Update the name attribute
+        var nameAttr = $(this).attr('name');
+        var newNameAttr = nameAttr.replace(/\[\d+\]/, "[" + subjectCounter + "]");
+        $(this).attr('name', newNameAttr);
+      });
+
+      $('#subject-fields-container').append($newSubjectFields);
+      subjectCounter++; // Increment the subject counter for the next set of fields
+    });
+  });
+</script>

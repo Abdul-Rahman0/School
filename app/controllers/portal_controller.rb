@@ -12,6 +12,9 @@ class PortalController < ApplicationController
     when :student
       @student = current_school_login
     end
+    
+    
+
   end
 
 end

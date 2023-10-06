@@ -20,6 +20,7 @@
         <button class="btn btn-primary" id="students-button">Show Students</button>
         <button class="btn btn-primary" id="teachers-button">Show Teachers</button>
         <button class="btn btn-primary" id="subjects-button">Show Subjects</button>
+        <%= link_to 'Create New Classes and Subjects', new_class_name_path , class: "btn btn-info btn-sm" %>
       </div>
       <% @students.each do |student| %>
         <tr class="student-row">
@@ -34,7 +35,7 @@
         <tr class="teacher-row">
           <td><%= teacher.id %></td>
           <td><%= teacher.class_names.pluck(:name).join(', ') %></td>
-          <td><%= teacher.subject.name %></td>
+          <td><%= teacher.subject.name if teacher.subject.present? %></td>
           <td><%= teacher.name %></td>
           <td><%= link_to 'show', school_login_registration_path(teacher.id), class: "btn btn-info btn-sm" %></td>
         </tr>
@@ -45,9 +46,11 @@
           <td></td>
           <td><%= subject.code %></td>
           <td><%= subject.name %></td>
-          <td><%= link_to 'Edit', edit_school_login_registration_path(subject), class: "btn btn-info btn-sm" %></td>
         </tr>
       <% end %>
+      <div class="subjectnew-row">
+        <%# <%= render 'class_names/new_class_subject_form' %> %>
+      </div>
       <% when :teacher %>
       <!-- Display teacher-related data -->
       <% if @teacher.present? %>
@@ -78,11 +81,14 @@
   </tbody>
 </table>
 </div>
+<!-- app/views/portal/index.html.erb -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const studentsButton = document.getElementById('students-button');
     const teachersButton = document.getElementById('teachers-button');
     const subjectsButton = document.getElementById('subjects-button');
+    const newClassesSubjectsButton = document.getElementById('new-classes-subjects-button');
+    const formContainer = document.getElementById('new-class-subject-form-container');
 
     studentsButton.addEventListener('click', function() {
       toggleRows('student-row');
@@ -94,6 +100,18 @@
 
     subjectsButton.addEventListener('click', function() {
       toggleRows('subject-row');
+    });
+
+      newClassesSubjectsButton.addEventListener('click', function() {
+      toggleRows('subjectnew-row');
+    });
+
+    newClassesSubjectsButton.addEventListener('click', function() {
+      if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+        formContainer.style.display = 'block';
+      } else {
+        formContainer.style.display = 'none';
+      }
     });
 
     function toggleRows(className) {

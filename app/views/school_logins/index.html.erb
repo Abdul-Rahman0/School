@@ -1,33 +1,33 @@
-<h1>School Logins</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>class name</th>
-      <th>subject</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @school_logins.each do |school_login| %>
+<div class="container mt-5">
+  <h1 class="mb-4">School Logins</h1>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
       <tr>
-        <td><%= school_login.name %></td>
-        <td><%= school_login.email %></td>
-        <td><%= school_login.class_name.name if school_login.class_name.present?%></td>
-        <td><%= school_login.class_name.subjects.pluck(:name).join(', ') if school_login.class_name.present? %></td>
-        <td>
-          <%= link_to 'Show', school_login %>
-          <%= link_to 'Edit', edit_school_login_path(school_login) %>
-          <%= link_to 'Delete', school_login_path(school_login), method: :destroy, data: { confirm: 'Are you sure?' } %>
-          <%= button_to "Destroy this student", school_login, method: :delete %>
-          <%= button_to 'Delete', school_login_path(school_login), method: :delete, data: { confirm: 'Are you sure?' } %>
-        </td>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Class Name</th>
+        <th>Subject</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-<%= link_to 'New School Login', new_school_login_path %>
-<script>
-  console.log("dfkskldsnf")
-</script>
+    </thead>
+    <tbody>
+      <% @school_logins.each do |school_login| %>
+        <tr>
+          <td><%= school_login.name %></td>
+          <td><%= school_login.email %></td>
+          <td><%= school_login.class_name.name if school_login.class_name.present? %></td>
+          <td><%= school_login.class_name.subjects.pluck(:name).join(', ') if school_login.class_name.present? %></td>
+          <td>
+            <%= link_to 'Show', school_login, class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Edit', edit_school_login_path(school_login), class: 'btn btn-warning btn-sm' %>
+            <%= button_to 'Delete', school_login_path(school_login), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= link_to 'New School Login', new_school_login_path, class: 'btn btn-primary' %>
+  <script>
+    console.log("dfkskldsnf");
+  </script>
+</div>

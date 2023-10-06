@@ -20,7 +20,7 @@
         <button class="btn btn-primary" id="students-button">Show Students</button>
         <button class="btn btn-primary" id="teachers-button">Show Teachers</button>
         <button class="btn btn-primary" id="subjects-button">Show Subjects</button>
-        <button class="btn btn-success" id="new-classes-subjects-button">Create New Classes and Subjects</button>
+        <%= link_to 'Create New Classes and Subjects', new_class_name_path , class: "btn btn-info btn-sm" %>
       </div>
       <% @students.each do |student| %>
         <tr class="student-row">
@@ -48,11 +48,8 @@
           <td><%= subject.name %></td>
         </tr>
       <% end %>
-      <div class="container mt-5">
-        <!-- Container for the form (hidden by default) -->
-        <div id="new-class-subject-form-container" style="display: none;">
-          <%= render 'new_class_subject_form' %>
-        </div>
+      <div class="subjectnew-row">
+        <%# <%= render 'class_names/new_class_subject_form' %> %>
       </div>
       <% when :teacher %>
       <!-- Display teacher-related data -->
@@ -103,6 +100,10 @@
 
     subjectsButton.addEventListener('click', function() {
       toggleRows('subject-row');
+    });
+
+      newClassesSubjectsButton.addEventListener('click', function() {
+      toggleRows('subjectnew-row');
     });
 
     newClassesSubjectsButton.addEventListener('click', function() {

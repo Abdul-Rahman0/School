@@ -4,8 +4,8 @@
     <div class="card-body">
       <p><strong>Name:</strong> <%= @school_login.name %></p>
       <p><strong>Email:</strong> <%= @school_login.email %></p>
-      <p><strong>Class:</strong> <%= @school_login.class_name.name %></p>
-      <p><strong>Subjects:</strong> <%= @school_login.class_name.subjects.pluck(:name).join(', ') %></p>
+      <p><strong>Class:</strong> <%= @school_login.class_name.name if @school_login.class_name.present?%></p>
+      <p><strong>Subjects:</strong> <%= @school_login.class_name.subjects.pluck(:name).join(', ') if @school_login.class_name.present? %></p>
     </div>
   </div>
   <div class="mt-3">

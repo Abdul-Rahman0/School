@@ -6,6 +6,7 @@ class ClassName < ApplicationRecord
 
   has_many :school_login, dependent: :destroy
   has_many :subjects, dependent: :destroy
+  accepts_nested_attributes_for :subjects 
 
 
   

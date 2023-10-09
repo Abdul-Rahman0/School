@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :teachers
   get 'admin/index'
   get 'teacher/index'
   get 'portal/info'
@@ -17,4 +18,9 @@ Rails.application.routes.draw do
   resources :class_names do
     resources :subjects
   end
+  resources :teachers
+
+  # devise_for :teachers, controllers: {
+  #   registrations: 'teachers/registrations'
+  # }
 end

@@ -1,0 +1,38 @@
+<!-- app/views/teachers/edit.html.erb -->
+<div class="container mt-5">
+  <h1 class="mb-4">Edit Teacher</h1>
+  <%= form_with(model: @teacher, local: true, class: 'form') do |form| %>
+    <% if @teacher.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger">
+        <h2><%= pluralize(@teacher.errors.count, "error") %> prohibited this teacher from being saved:</h2>
+        <ul>
+          <% @teacher.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <%= form.label :name, class: 'control-label' %>
+      <%= form.text_field :name, class: 'form-control', readonly: true %>
+    </div>
+    <div class="form-group">
+      <%= form.label :email, class: 'control-label' %>
+      <%= form.email_field :email, class: 'form-control', readonly: true %>
+    </div>
+    <div class="form-group">
+      <%= form.label :class_name_ids, 'Class Names', class: 'control-label' %>
+      <%= form.collection_check_boxes :class_name_ids, ClassName.all, :id, :name %>
+    </div>
+    <div class="form-group">
+      <%= form.label :subject_ids, 'Subjects', class: 'control-label' %>
+      <%= form.collection_check_boxes :subject_ids, Subject.all, :id, :name %>
+    </div>
+    <!-- Password fields should be hidden for editing -->
+    <%= form.hidden_field :password %>
+    <%= form.hidden_field :password_confirmation %>
+    <div class="actions">
+      <%= form.submit 'Update Teacher', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

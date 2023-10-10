@@ -10,6 +10,5 @@ class ClassName < ApplicationRecord
 
 
   
-  has_many :classinfo
-  has_many :teachers, through: :classinfo
+  has_and_belongs_to_many :teachers
 end

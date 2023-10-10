@@ -26,15 +26,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_09_124109) do
     t.index ["teacher_id"], name: "index_class_names_teachers_on_teacher_id"
   end
 
-  create_table "classinfos", force: :cascade do |t|
-    t.integer "class_name_id"
-    t.integer "teacher_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["class_name_id"], name: "index_classinfos_on_class_name_id"
-    t.index ["teacher_id"], name: "index_classinfos_on_teacher_id"
-  end
-
   create_table "school_logins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false

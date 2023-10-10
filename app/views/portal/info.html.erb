@@ -35,9 +35,10 @@
         <tr class="teacher-row">
           <td><%= teacher.id %></td>
           <td><%= teacher.class_names.pluck(:name).join(', ') %></td>
-          <td><%= teacher.subject.name if teacher.subject.present? %></td>
+          <td><%= teacher.subjects.pluck(:name).join(', ') %></td>
           <td><%= teacher.name %></td>
-          <td><%= link_to 'show', school_login_registration_path(teacher.id), class: "btn btn-info btn-sm" %></td>
+          <td><%= link_to 'assign class', edit_teacher_path(teacher.id), class: "btn btn-info btn-sm" %></td>
+          <td><%= link_to 'assign subjects', edit_teacher_path(teacher.id), class: "btn btn-info btn-sm" %></td>
         </tr>
       <% end %>
       <% @subjects.each do |subject| %>

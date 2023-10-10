@@ -3,41 +3,32 @@
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
   <%= f.input :name %><br>
   <h4>Subjects</h4>
-  <div class="subject-fields-template">
+  <div id="subjects">
     <%= f.simple_fields_for :subjects do |subjects| %>
-      <%= render 'subject_fields', subjects: subjects, f: f %>
+      <%= render 'subject_fields', f: subjects %>
     <% end %>
+    <%= link_to_add_association 'Add Another Subject', f, :subjects %>
   </div>
-  <div id="subject-fields-container">
-  </div>
-  <p id="add-subject">Add Another Subject</p>
   <%= f.button :submit, class: 'btn btn-primary' %>
 <% end %>
 <script>
   $(document).ready(function() {
-    var subjectCounter = 0;
-
-    $('#add-subject').click(function() {
-      var time = new Date().getTime();
-      var subjectFieldsTemplate = $('.subject-fields-template').html();
-      subjectFieldsTemplate = subjectFieldsTemplate.replace(/NEW_RECORD/g, time);
-      var $newSubjectFields = $(subjectFieldsTemplate);
-
-      // Generate unique IDs and update name attributes for the newly added subject fields
-      $newSubjectFields.find('[id^="class_name_subjects_attributes_"]').each(function() {
-        var uniqueId = "class_name_subjects_attributes_" + time + "_" + subjectCounter;
-        var oldId = $(this).attr('id');
-        var newId = oldId.replace(/class_name_subjects_attributes_\d+/, uniqueId);
-        $(this).attr('id', newId);
-
-        // Update the name attribute
-        var nameAttr = $(this).attr('name');
-        var newNameAttr = nameAttr.replace(/\[\d+\]/, "[" + subjectCounter + "]");
-        $(this).attr('name', newNameAttr);
+    $('#subjects').cocoon();
+      $('#subjects').on('cocoon:before-insert', function(e, insertedItem) {
+        // Do any setup you need before inserting the new fields.
       });
 
-      $('#subject-fields-container').append($newSubjectFields);
-      subjectCounter++; // Increment the subject counter for the next set of fields
-    });
+      $('#subjects').on('cocoon:after-insert', function(e, insertedItem) {
+        // Do any setup you need after inserting the new fields.
+      });
+  $('#subjects').on('cocoon:before-remove', function(e, removedItem) {
+  console.log('Before Remove Event');
+  // Do any setup you need before removing the fields.
   });
+
+
+      $('#subjects').on('cocoon:after-remove', function(e, removedItem) {
+        // Do any setup you need after removing the fields.
+      });
+    });
 </script>

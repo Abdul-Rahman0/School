@@ -1,5 +1,6 @@
-<%= f.simple_fields_for :subjects do |subjects| %>
-  <%= subjects.input :name %>
-  <%= subjects.input :code %>
-  <%= subjects.input :_destroy, as: :hidden, input_html: { class: 'remove-subject' } %>
-<% end %>
+<div class="nested-fields">
+  <%= f.input :name %>
+  <%= f.input :code %>
+  <%= f.input :_destroy, as: :hidden, input_html: { class: 'remove-subject' } %>
+  <%= link_to_remove_association "click to remove", f, class: "btn btn-outline-danger btn-sm float-end", wrapper_class: "subjects" %>
+</div>

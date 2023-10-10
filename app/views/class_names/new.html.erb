@@ -14,21 +14,13 @@
 <script>
   $(document).ready(function() {
     $('#subjects').cocoon();
-      $('#subjects').on('cocoon:before-insert', function(e, insertedItem) {
-        // Do any setup you need before inserting the new fields.
-      });
 
-      $('#subjects').on('cocoon:after-insert', function(e, insertedItem) {
-        // Do any setup you need after inserting the new fields.
-      });
-  $('#subjects').on('cocoon:before-remove', function(e, removedItem) {
-  console.log('Before Remove Event');
-  // Do any setup you need before removing the fields.
-  });
-
-
-      $('#subjects').on('cocoon:after-remove', function(e, removedItem) {
-        // Do any setup you need after removing the fields.
-      });
+    $('#subjects').on('cocoon:before-insert', function(e, insertedItem) {
+      // Do any setup you need before inserting the new fields.
     });
+
+    $('#subjects').on('cocoon:after-insert', function(e, insertedItem) {
+      // Do any setup you need after inserting the new fields.
+    });
+  });
 </script>
